@@ -13,8 +13,22 @@
 This example shows you how to use pycn (the Python client library for the Consumer Notebook API) in a web app.
 </p>
 
-<p>
-<a class="btn" href="{{ connect_url }}">Connect</a> with Consumer Notebook
-</p>
+
+{% if api %}
+    {% set my_profile = api.my_profile() %}
+    <h3>About You</h3>
+    <p>Username: {{ my_profile.username }}</p>
+    <p>Full name: {{ my_profile.fullname }}</p>
+    <p>Coins: {{ my_profile.coins }}</p>
+    <p>Score: {{ my_profile.score }}</p>    
+    <p>Waitlisted: {{ my_profile.waitlisted }}</p>        
+    <p>Followers: {{ my_profile.followers|length }}</p>            
+    <p>Following: {{ my_profile.following|length }}</p>                
+    
+{% else %}
+    <p>
+    <a class="btn" href="{{ connect_url }}">Connect</a> with Consumer Notebook
+    </p>    
+{% endif %}
 
 {% endblock %}

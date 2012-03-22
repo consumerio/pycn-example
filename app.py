@@ -7,7 +7,7 @@ This file creates your application.
 """
 
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import private
 import pycn
 
@@ -18,7 +18,7 @@ if 'SECRET_KEY' in os.environ:
 else:
     app.config['SECRET_KEY'] = 'this_should_be_configured'
 
-auth = pycn.OAuth2Handler(
+AUTH = pycn.OAuth2Handler(
         client_id=private.CLIENT_ID,
         client_secret=private.CLIENT_SECRET,
         redirect_uri=private.REDIRECT_URI
@@ -32,12 +32,19 @@ auth = pycn.OAuth2Handler(
 @app.route('/')
 def home():
     """Render website's home page."""
+    
+    auth = session.get('auth',AUTH)
+    
     try:
         connect_url = auth.get_authorization_url()
     except pycn.AuthorizationURLError:
         app.logger.error('Cannot get the authorization URL.')
+    
+    api = None
+    if auth.access_token:
+        api = pycn.API(auth)
 
-    return render_template('home.html', connect_url=connect_url)
+    return render_template('home.html', connect_url=connect_url, api=api)
 
 @app.route('/browse/')
 def browse():
@@ -47,11 +54,12 @@ def browse():
 
     # Use it to get an access token
     try:
-        access_token = auth.get_access_token(code)
+        access_token = AUTH.get_access_token(code)
+        session['auth'] = AUTH
     except pycn.AccessTokenError:
         app.logger.error('Error! Failed to get access token.')
         
-    api = pycn.API(auth)
+    api = pycn.API(AUTH)
 
     return render_template('browse.html', access_token=access_token, my_profile=api.my_profile())
 
