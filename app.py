@@ -50,8 +50,10 @@ def browse():
         access_token = auth.get_access_token(code)
     except pycn.AccessTokenError:
         app.logger.error('Error! Failed to get access token.')
+        
+    api = pycn.API(auth)
 
-    return render_template('browse.html', access_token=access_token)
+    return render_template('browse.html', access_token=access_token, my_profile=api.my_profile())
 
 @app.route('/about/')
 def about():
