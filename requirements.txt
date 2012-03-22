@@ -1,0 +1,23 @@
+# ----------------------
+# Flask
+# ----------------------
+flask
+
+
+# ----------------------
+# Testing
+# ----------------------
+mock
+
+
+# ----------------------
+# Production Server
+# ----------------------
+gevent
+gunicorn
+
+# ----------------------
+# pycn
+# ----------------------
+requests==0.10.6
+#-e git://github.com/consumernotebook/pycn.git#egg=pycn
