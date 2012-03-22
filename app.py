@@ -23,7 +23,7 @@ auth = pycn.OAuth2Handler(
         client_secret=private.CLIENT_SECRET,
         redirect_uri=private.REDIRECT_URI
     )
-    
+
 
 ###
 # Routing for your application.
@@ -39,6 +39,19 @@ def home():
 
     return render_template('home.html', connect_url=connect_url)
 
+@app.route('/browse/')
+def browse():
+    """Render the website's browse page."""
+    # Get the "code" value
+    code = request.args.get('code', '')
+
+    # Use it to get an access token
+    try:
+        access_token = auth.get_access_token(code)
+    except pycn.AccessTokenError:
+        app.logger.error('Error! Failed to get access token.')
+
+    return render_template('browse.html', access_token=access_token)
 
 @app.route('/about/')
 def about():
