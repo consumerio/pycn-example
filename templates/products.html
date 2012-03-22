@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+
+{% block js %}
+{% endblock %}
+
+
+{% block main %}
+
+<h2>Latest 20 Products of {{ products.meta.total_count }}</h2>
+
+<ol>
+{% for product in products.objects: %}
+    <li><a href="{{ product.url }}">{{ product.title  }}</a> {{ product }}</li>
+{% endfor %}
+</ol>
+
+{% endblock %}

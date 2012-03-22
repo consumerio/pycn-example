@@ -15,7 +15,7 @@ This example shows you how to use pycn (the Python client library for the Consum
 
 
 {% if api %}
-    {% set my_profile = api.my_profile() %}
+    {% set my_profile = api.my_profile() %}    
     <h3>About You</h3>
     <p>Username: {{ my_profile.username }}</p>
     <p>Full name: {{ my_profile.fullname }}</p>
@@ -27,6 +27,10 @@ This example shows you how to use pycn (the Python client library for the Consum
     <p>Lists: {{ api.my_lists().meta.total_count }}</p>
     <p>Grids: {{ api.my_grids().meta.total_count }}</p>
     <p>Products: {{ api.my_products().meta.total_count }}</p>
+    
+    <ul>
+        <li><a href="/products/">All Products</a></li>
+    </ul>
     
 {% else %}
     <p>

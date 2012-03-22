@@ -34,17 +34,27 @@ def home():
     """Render website's home page."""
     
     auth = session.get('auth',AUTH)
-    
+
     try:
         connect_url = auth.get_authorization_url()
     except pycn.AuthorizationURLError:
         app.logger.error('Cannot get the authorization URL.')
-    
+
     api = None
     if auth.access_token:
         api = pycn.API(auth)
 
     return render_template('home.html', connect_url=connect_url, api=api)
+    
+@app.route('/products/')
+def products():
+    """Render website's products."""
+
+    auth = session.get('auth',AUTH)
+    api = pycn.API(auth)
+    
+    return render_template('products.html', products=api.products())
+
 
 @app.route('/browse/')
 def browse():
